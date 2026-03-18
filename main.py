@@ -1,0 +1,21 @@
+from fastapi import FastAPI 
+
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    """
+    To access:
+    http://127.0.0.1:8000
+    """
+    return {"hello":"world"}
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: str | None = None):
+    """
+    To access: 
+    http://127.0.0.1:8000/items/5?q=somequery
+    """
+    
+    return {"item_id": item_id, "q":q}
+
