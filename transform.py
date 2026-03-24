@@ -18,8 +18,8 @@ df = pd.read_csv(raw_batch)
 ### TRANSFORMATIONS
 
 df = df.drop(columns=["Dividends", "Stock Splits"])
-df.columns = ["date", "open", "high", "low", "close", "volume", "ticker"]
-df["date"] = pd.to_datetime(df["date"], utc=True)
+df.columns = ["datetime", "open", "high", "low", "close", "volume", "ticker"]
+df["datetime"] = pd.to_datetime(df["datetime"], utc=True)
 
 
 df["SMA10"] = ta.sma(df.close, length=10)
@@ -38,7 +38,9 @@ ichimoku_df = ta.ichimoku(
 df = pd.concat([df, ichimoku_df], axis=1)
 
 df = df.dropna()
+df = df.set_index("datetime", drop=True)
 
 print(df.info())
+print(df.index.name)
 
 df.to_csv(f"{transformed_batch}/current_batch.csv")
